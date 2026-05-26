@@ -1,4 +1,4 @@
-<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer__ServiceRepairOrder_EXT" id="PrintedJobCard" renderAs="PDF" applyBodyTag="false">
+<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="PrintedJobCard" renderAs="PDF" applyBodyTag="false">
 <head>
 <style type="text/css">
 body {
@@ -157,8 +157,7 @@ margin: 0.25in;
             <div id="orgDetails" class="plEve">
             	<apex:outputText value="{!$Organization.Name}" style="font-size:18px;font-weight:bold;" /><br />
             	<apex:outputText value="{!$Organization.Street}" /><br />
-            	<apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />	
-            	<apex:outputText value="{!DMSDefaults.dealer__Corporate_Website__c}" />
+            	<apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />
             </div>
     	</td>
         <td width="500px">
@@ -185,24 +184,24 @@ margin: 0.25in;
         </tr>
         <tr>
         	<td class="bBottom">RO#&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.Name}" label="RO#" /></td>
+            <td class="bBottom"><apex:outputField value="{!ro.Name}" label="RO#" /></td>
             <td class="bBottom">Advisor&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__c}" label="Service Advisor" /></td>
+            <td class="bBottom"><apex:outputField value="{!ro.dealer__Service_Advisor__c}" label="Service Advisor" /></td>
         </tr>        
         <tr>
         	<td class="bBottom">Vehicle&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}" label="Vehicle" /></td>
+            <td class="bBottom"><apex:outputField value="{!ro.dealer__Vehicle__c}" label="Vehicle" /></td>
             <td class="bBottom">TAG&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}" label="TAG" /></td>
+            <td class="bBottom"><apex:outputField value="{!ro.dealer__Tag__c}" label="TAG" /></td>
         </tr>
         <tr>
         	<td class="bBottom">VIN&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" label="Vehicle" /></td>
+            <td class="bBottom"><apex:outputField value="{!ro.dealer__Vehicle__r.dealer__VIN__c}" label="Vehicle" /></td>
             <td class="bBottom">&nbsp;</td>
             <td class="bBottom">&nbsp;</td>
         </tr>
         <tr>
-        	<td colspan="4" style="font-size: 10px;">Notes:&nbsp;<apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Comments__c}" /></td>
+        	<td colspan="4" style="font-size: 10px;">Notes:&nbsp;<apex:outputField value="{!ro.dealer__Comments__c}" /></td>
         </tr>
     </table>
     <div style="height: 35px" />
@@ -228,7 +227,7 @@ margin: 0.25in;
                 <tr>
                     <td colspan="6">
                         <b>Job Lines</b> — RO#&nbsp;
-                        <apex:outputField value="{!dealer__Service_Repair_Order__c.Name}" />
+                        <apex:outputField value="{!ro.Name}" />
                     </td>
                 </tr>
                 <tr>
