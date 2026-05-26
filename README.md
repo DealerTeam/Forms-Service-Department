@@ -2,9 +2,7 @@
 
 Unmanaged Visualforce PDF forms for [DealerTeam DMS](https://www.dealerteam.com/) customer orgs. Deploy these pages into your org to customize service print layouts without modifying the managed package.
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=DealerTeam&repo=Forms-Service-Department&ref=main">
-  <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/src/main/webapp/resources/img/deploy.png"/>
-</a>
+
 
 > **Deploy to a sandbox?** Use the same button above and choose **Sandbox** on the deployment screen, or append `&endpoint=https://test.salesforce.com` to the URL.
 
@@ -22,22 +20,26 @@ Each page uses the same Apex controllers and extensions from the DealerTeam mana
 
 Before deploying, confirm your target org has:
 
-| Requirement | Details |
-|-------------|---------|
-| **DealerTeam DMS** | The managed package must be installed. These pages depend on `dealer__` objects, fields, and Apex classes. |
-| **Service Repair Order access** | Users who print these forms need access to `dealer__Service_Repair_Order__c` and related records. |
-| **Deploy permissions** | The deploying user needs **Modify All Data** or **Customize Application**, plus permission to author Apex pages. |
+
+| Requirement                     | Details                                                                                                          |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **DealerTeam DMS**              | The managed package must be installed. These pages depend on `dealer__` objects, fields, and Apex classes.       |
+| **Service Repair Order access** | Users who print these forms need access to `dealer__Service_Repair_Order__c` and related records.                |
+| **Deploy permissions**          | The deploying user needs **Modify All Data** or **Customize Application**, plus permission to author Apex pages. |
+
 
 > **Note:** A scratch org created from `config/project-scratch-def.json` alone will **not** include DealerTeam DMS. Use a sandbox or production org that already has the package installed.
 
 ## Included Forms
 
-| Unmanaged Page | Managed Package Equivalent | Description | Controller / Extension |
-|----------------|---------------------------|-------------|------------------------|
-| `DMSServiceRepairOrderPDF` | `dealer__ServiceRepairOrderPDF` | Standard service repair order PDF | `dealer__ServiceRepairOrder_EXT` |
-| `DMSServiceRepairOrderAuditPDF` | `dealer__ServiceRepairOrderAuditCopyPDF` | Audit copy of the repair order | `dealer__SROPrint` |
-| `DMSServiceRepairOrderWarranty` | `dealer__ServiceRepairOrderWarrantyCopy` | Warranty copy of the repair order | `dealer__SROPrint` |
-| `DMSTechJobCardPDF` | `dealer__TechJobCardPDF` | Technician job card | `dealer__ServiceRepairOrder_EXT` |
+
+| Unmanaged Page                  | Managed Package Equivalent               | Description                       | Controller / Extension           |
+| ------------------------------- | ---------------------------------------- | --------------------------------- | -------------------------------- |
+| `DMSServiceRepairOrderPDF`      | `dealer__ServiceRepairOrderPDF`          | Standard service repair order PDF | `dealer__ServiceRepairOrder_EXT` |
+| `DMSServiceRepairOrderAuditPDF` | `dealer__ServiceRepairOrderAuditCopyPDF` | Audit copy of the repair order    | `dealer__SROPrint`               |
+| `DMSServiceRepairOrderWarranty` | `dealer__ServiceRepairOrderWarrantyCopy` | Warranty copy of the repair order | `dealer__SROPrint`               |
+| `DMSTechJobCardPDF`             | `dealer__TechJobCardPDF`                 | Technician job card               | `dealer__ServiceRepairOrder_EXT` |
+
 
 All pages:
 
@@ -86,12 +88,14 @@ sf project deploy validate --source-dir force-app --wait 10
 
 Each page is accessed via a Visualforce URL on a Service Repair Order record. Replace `{ORG_DOMAIN}` and `{RECORD_ID}` with your values:
 
-| Form | URL Pattern |
-|------|-------------|
-| Repair Order PDF | `https://{ORG_DOMAIN}/apex/DMSServiceRepairOrderPDF?id={RECORD_ID}` |
-| Audit Copy PDF | `https://{ORG_DOMAIN}/apex/DMSServiceRepairOrderAuditPDF?id={RECORD_ID}` |
+
+| Form              | URL Pattern                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| Repair Order PDF  | `https://{ORG_DOMAIN}/apex/DMSServiceRepairOrderPDF?id={RECORD_ID}`      |
+| Audit Copy PDF    | `https://{ORG_DOMAIN}/apex/DMSServiceRepairOrderAuditPDF?id={RECORD_ID}` |
 | Warranty Copy PDF | `https://{ORG_DOMAIN}/apex/DMSServiceRepairOrderWarranty?id={RECORD_ID}` |
-| Tech Job Card PDF | `https://{ORG_DOMAIN}/apex/DMSTechJobCardPDF?id={RECORD_ID}` |
+| Tech Job Card PDF | `https://{ORG_DOMAIN}/apex/DMSTechJobCardPDF?id={RECORD_ID}`             |
+
 
 ### Pointing buttons and links to your custom pages
 
@@ -132,12 +136,14 @@ Forms-Service-Department/
 
 ## Troubleshooting
 
-| Issue | Likely cause | Resolution |
-|-------|--------------|------------|
-| Deployment fails on Apex references | DealerTeam DMS not installed | Install the managed package in the target org first |
-| Page loads but PDF is blank | Missing record ID or insufficient field access | Pass a valid `id` query parameter; check FLS and record access |
-| Managed page still appears | Org still references `dealer__` page names | Update buttons, links, and overrides to use `DMS`-prefixed pages |
-| Deploy button shows no components | Branch or repo mismatch | Confirm you deploy from `main` and that `sfdx-project.json` is present |
+
+| Issue                               | Likely cause                                   | Resolution                                                             |
+| ----------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------- |
+| Deployment fails on Apex references | DealerTeam DMS not installed                   | Install the managed package in the target org first                    |
+| Page loads but PDF is blank         | Missing record ID or insufficient field access | Pass a valid `id` query parameter; check FLS and record access         |
+| Managed page still appears          | Org still references `dealer__` page names     | Update buttons, links, and overrides to use `DMS`-prefixed pages       |
+| Deploy button shows no components   | Branch or repo mismatch                        | Confirm you deploy from `main` and that `sfdx-project.json` is present |
+
 
 ## Contributing
 

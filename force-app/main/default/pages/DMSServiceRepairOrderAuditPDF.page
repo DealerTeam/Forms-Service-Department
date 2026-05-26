@@ -370,9 +370,9 @@
                                 />
                             </b>
                             <br />
-                            <apex:outputText rendered="{!NOT(ISBLANK(l.dealer__PricingStrategy__r.SaleAccount__r.Name))}">
+                            <apex:outputText rendered="{!NOT(ISBLANK(l.dealer__PricingStrategy__r.dealer__SaleAccount__r.Name))}">
                                 <span class="cGreyI">Labor GL Account:&nbsp;</span>
-                                <apex:outputText value="{!l.dealer__PricingStrategy__r.SaleAccount__r.Name}" />
+                                <apex:outputText value="{!l.dealer__PricingStrategy__r.dealer__SaleAccount__r.Name}" />
                                 <br />
                             </apex:outputText>
                             <span class="cGreyI">Complaint:&nbsp;</span>
