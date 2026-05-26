@@ -219,7 +219,7 @@ margin: 0.25in;
         </tr>
     </table>
     <apex:variable var="lineNum" value="{!0}" />
-    <apex:repeat value="{!selectedLines}" var="s">
+    <apex:repeat value="{!ServiceJobList}" var="s">
         <apex:variable var="lineNum" value="{!lineNum + 1}" />
         <apex:outputPanel layout="block" rendered="{!OR(lineNum == 3, AND(lineNum > 3, MOD(lineNum - 3, 4) == 0))}">
             <div class="page-break-before"></div>
