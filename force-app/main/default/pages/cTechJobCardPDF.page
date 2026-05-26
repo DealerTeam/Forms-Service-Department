@@ -138,6 +138,13 @@ img { border:0; }
  padding: 1px 1px 2px 2px;
 }
 
+.job-line-block {
+    page-break-inside: avoid;
+}
+
+.page-break-before {
+    page-break-before: always;
+}
 
 @page {
 /* Landscape orientation */
@@ -216,22 +223,44 @@ margin: 0.25in;
             <th class="bBottom bTop blueBack">Concern</th>
             <th class="bBottom bRight bTop blueBack">Technician</th>
         </tr>
-        <apex:repeat value="{!selectedLines}" var="s">
-        <tr>
-            <td class="bBottom bLeft"><apex:outputField value="{!s.dealer__Line_Number__c}" /></td>
-            <td class="bBottom"><apex:outputField value="{!s.dealer__Labor_Type__c}" /></td>
-            <td class="bBottom"><apex:outputField value="{!s.dealer__Stat__c}" /></td>
-            <td class="bBottom"><apex:outputField value="{!s.dealer__Operation_Code_Description__c}" /></td>
-            <td class="bBottom"><apex:outputField value="{!s.dealer__Concern__c}" /></td>
-            <td class="bBottom bRight"><apex:outputField value="{!s.dealer__Technician__c}" /></td>
-        </tr>
-       
-        <tr>
-            <td class="bBottom bLeft">Notes:</td>
-            <td class="bBottom bRight" colspan="7"><div style="height: 55px;" /></td>
-        </tr>
-       	</apex:repeat>
     </table>
+    <apex:variable var="lineNum" value="{!0}" />
+    <apex:repeat value="{!selectedLines}" var="s">
+        <apex:variable var="lineNum" value="{!lineNum + 1}" />
+        <apex:outputPanel layout="block" rendered="{!OR(lineNum == 3, AND(lineNum > 3, MOD(lineNum - 3, 4) == 0))}">
+            <div class="page-break-before"></div>
+            <table width="100%" cellpadding="4" cellspacing="0">
+                <tr>
+                    <td colspan="6">
+                        <b>Job Lines</b> — RO#&nbsp;
+                        <apex:outputField value="{!dealer__Service_Repair_Order__c.Name}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bBottom bLeft bTop blueBack">Line#</th>
+                    <th class="bBottom bTop blueBack">Labor Type</th>
+                    <th class="bBottom bTop blueBack">Stat</th>
+                    <th class="bBottom bTop blueBack">Description</th>
+                    <th class="bBottom bTop blueBack">Concern</th>
+                    <th class="bBottom bRight bTop blueBack">Technician</th>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        <table width="100%" cellpadding="4" cellspacing="0" class="job-line-block">
+            <tr>
+                <td class="bBottom bLeft"><apex:outputField value="{!s.dealer__Line_Number__c}" /></td>
+                <td class="bBottom"><apex:outputField value="{!s.dealer__Labor_Type__c}" /></td>
+                <td class="bBottom"><apex:outputField value="{!s.dealer__Stat__c}" /></td>
+                <td class="bBottom"><apex:outputField value="{!s.dealer__Operation_Code_Description__c}" /></td>
+                <td class="bBottom"><apex:outputField value="{!s.dealer__Concern__c}" /></td>
+                <td class="bBottom bRight"><apex:outputField value="{!s.dealer__Technician__c}" /></td>
+            </tr>
+            <tr>
+                <td class="bBottom bLeft">Notes:</td>
+                <td class="bBottom bRight" colspan="5"><div style="height: 55px;" /></td>
+            </tr>
+        </table>
+    </apex:repeat>
     
     <!-- Common Footer -->
     <div style="position: fixed; bottom: 0; width: 100%; font-size: 10px; padding: 5px;">
