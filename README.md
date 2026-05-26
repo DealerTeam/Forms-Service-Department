@@ -10,7 +10,7 @@ Unmanaged Visualforce PDF forms for [DealerTeam DMS](https://www.dealerteam.com/
 
 ## Overview
 
-DealerTeam DMS ships managed Visualforce pages for common service documents. Those pages cannot be edited directly in subscriber orgs. This repository provides **unmanaged copies** of those pages (prefixed with `c`) so you can:
+DealerTeam DMS ships managed Visualforce pages for common service documents. Those pages cannot be edited directly in subscriber orgs. This repository provides **unmanaged copies** of those pages (prefixed with `cDMS`) so you can:
 
 - Adjust layout, branding, and field visibility
 - Add or remove sections for your dealership's workflow
@@ -34,10 +34,10 @@ Before deploying, confirm your target org has:
 
 | Unmanaged Page | Managed Package Equivalent | Description | Controller / Extension |
 |----------------|---------------------------|-------------|------------------------|
-| `cServiceRepairOrderPDF` | `dealer__ServiceRepairOrderPDF` | Standard service repair order PDF | `dealer__ServiceRepairOrder_EXT` |
-| `cServiceRepairOrderAuditPDF` | `dealer__ServiceRepairOrderAuditCopyPDF` | Audit copy of the repair order | `dealer__SROPrint` |
-| `cServiceRepairOrderWarranty` | `dealer__ServiceRepairOrderWarrantyCopy` | Warranty copy of the repair order | `dealer__SROPrint` |
-| `cTechJobCardPDF` | `dealer__TechJobCardPDF` | Technician job card | `dealer__ServiceRepairOrder_EXT` |
+| `cDMSServiceRepairOrderPDF` | `dealer__ServiceRepairOrderPDF` | Standard service repair order PDF | `dealer__ServiceRepairOrder_EXT` |
+| `cDMSServiceRepairOrderAuditPDF` | `dealer__ServiceRepairOrderAuditCopyPDF` | Audit copy of the repair order | `dealer__SROPrint` |
+| `cDMSServiceRepairOrderWarranty` | `dealer__ServiceRepairOrderWarrantyCopy` | Warranty copy of the repair order | `dealer__SROPrint` |
+| `cDMSTechJobCardPDF` | `dealer__TechJobCardPDF` | Technician job card | `dealer__ServiceRepairOrder_EXT` |
 
 All pages:
 
@@ -88,14 +88,14 @@ Each page is accessed via a Visualforce URL on a Service Repair Order record. Re
 
 | Form | URL Pattern |
 |------|-------------|
-| Repair Order PDF | `https://{ORG_DOMAIN}/apex/cServiceRepairOrderPDF?id={RECORD_ID}` |
-| Audit Copy PDF | `https://{ORG_DOMAIN}/apex/cServiceRepairOrderAuditPDF?id={RECORD_ID}` |
-| Warranty Copy PDF | `https://{ORG_DOMAIN}/apex/cServiceRepairOrderWarranty?id={RECORD_ID}` |
-| Tech Job Card PDF | `https://{ORG_DOMAIN}/apex/cTechJobCardPDF?id={RECORD_ID}` |
+| Repair Order PDF | `https://{ORG_DOMAIN}/apex/cDMSServiceRepairOrderPDF?id={RECORD_ID}` |
+| Audit Copy PDF | `https://{ORG_DOMAIN}/apex/cDMSServiceRepairOrderAuditPDF?id={RECORD_ID}` |
+| Warranty Copy PDF | `https://{ORG_DOMAIN}/apex/cDMSServiceRepairOrderWarranty?id={RECORD_ID}` |
+| Tech Job Card PDF | `https://{ORG_DOMAIN}/apex/cDMSTechJobCardPDF?id={RECORD_ID}` |
 
 ### Pointing buttons and links to your custom pages
 
-After deployment, update any custom buttons, Lightning actions, or page overrides in your org to reference the `c`-prefixed page names instead of the managed package pages. Common places to check:
+After deployment, update any custom buttons, Lightning actions, or page overrides in your org to reference the `cDMS`-prefixed page names instead of the managed package pages. Common places to check:
 
 - Service Repair Order page layouts and buttons
 - Custom list views or Lightning record actions
@@ -136,7 +136,7 @@ Forms-Service-Department/
 |-------|--------------|------------|
 | Deployment fails on Apex references | DealerTeam DMS not installed | Install the managed package in the target org first |
 | Page loads but PDF is blank | Missing record ID or insufficient field access | Pass a valid `id` query parameter; check FLS and record access |
-| Managed page still appears | Org still references `dealer__` page names | Update buttons, links, and overrides to use `c`-prefixed pages |
+| Managed page still appears | Org still references `dealer__` page names | Update buttons, links, and overrides to use `cDMS`-prefixed pages |
 | Deploy button shows no components | Branch or repo mismatch | Confirm you deploy from `main` and that `sfdx-project.json` is present |
 
 ## Contributing
