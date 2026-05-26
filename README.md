@@ -2,7 +2,7 @@
 
 Unmanaged Visualforce PDF forms for [DealerTeam DMS](https://www.dealerteam.com/) customer orgs. Deploy these pages into your org to customize service print layouts without modifying the managed package.
 
-
+[![Deploy to Salesforce](https://raw.githubusercontent.com/forcedotcom/sfdx-button/master/assets/deploy/deploy-to-sfdx.svg)](https://githubsfdeploy.herokuapp.com/?owner=DealerTeam&repo=Forms-Service-Department&ref=main)
 
 > **Deploy to a sandbox?** Use the same button above and choose **Sandbox** on the deployment screen, or append `&endpoint=https://test.salesforce.com` to the URL.
 
