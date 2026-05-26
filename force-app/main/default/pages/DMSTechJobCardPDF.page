@@ -1,6 +1,6 @@
 <!--
     Unmanaged Visualforce page for orgs with DealerTeam DMS installed.
-    Based on managed package page: dealer__TechJobCardPDF (unmanaged: cDMSTechJobCardPDF)
+    Based on managed package page: dealer__TechJobCardPDF (unmanaged: DMSTechJobCardPDF)
     Customize this page in your org without modifying the managed package.
 -->
 <apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer__ServiceRepairOrder_EXT" id="PrintedJobCard" renderAs="PDF" applyBodyTag="false">
