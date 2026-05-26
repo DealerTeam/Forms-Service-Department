@@ -197,7 +197,7 @@ margin: 0.25in;
         </tr>
         <tr>
         	<td class="bBottom">VIN&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" label="Vehicle" /></td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.VIN__c}" label="Vehicle" /></td>
             <td class="bBottom">&nbsp;</td>
             <td class="bBottom">&nbsp;</td>
         </tr>

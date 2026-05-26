@@ -347,7 +347,7 @@
                 <td>Tag#</td>
             </tr>
             <tr>
-                <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" /></td>
+                <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.VIN__c}" /></td>
                 <td><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Mileage_In__c}" /></apex:outputText></td>
                 <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__r.Name}" /></td>
                 <td><apex:outputText value="{0,date,MM/dd/yyyy}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c}" /></apex:outputText></td>
@@ -365,15 +365,15 @@
             <td>Stock/Equipment Number&nbsp;</td>
           </tr>
           <tr>
-            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Year__c}" />&nbsp;</td>
-            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Make__c}" />&nbsp;</td>
-            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Carline__c}" />&nbsp;</td>
-            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Vehicle_Description__c}" />&nbsp;</td>
-            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Licence__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Year__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Make__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Carline__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Vehicle_Description__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Licence__c}" />&nbsp;</td>
             <td class="mPrint">
-                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c}" />&nbsp;
-                <apex:outputText rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c)), NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c)))}">,&nbsp;</apex:outputText>
-                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c}" />
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Equipment_Number__c}" />&nbsp;
+                <apex:outputText rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.Stock_Number__c)), NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.Equipment_Number__c)))}">,&nbsp;</apex:outputText>
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.Stock_Number__c}" />
             </td>
           </tr>
         </table>
@@ -582,7 +582,7 @@
                                                                 <apex:outputText value="{!sl.dealer__Purchase_Order__r.Name}" />
                                                             </td>
                                                             <td class="mPrint">
-                                                                <apex:outputText value="{!sl.dealer__Purchase_Order__r.dealer__Vendor_Name__c}" />
+                                                                <apex:outputText value="{!sl.dealer__Purchase_Order__r.Vendor_Name__c}" />
                                                             </td>
                                                             <td class="mPrint">
                                                                 <apex:outputText value="{!sl.dealer__Description__c}" />
