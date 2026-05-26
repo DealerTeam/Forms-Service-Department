@@ -808,53 +808,6 @@
                 <th align="right">{!$ObjectType.dealer__Cashering__c.Fields.dealer__ProcessingFee__c.Label}&nbsp;</th>
                 <th align="right">Payment Total</th>
               </tr>
-              <apex:variable var="index" value="{!1}"/>
-              <apex:variable var="totalSale" value="{!0}"/>
-              <apex:variable var="totalFees" value="{!0}"/>
-              <apex:repeat var="cashLine" value="{!cashLines}">
-                <tr width="100%" class="{!IF(MOD(index,2)==0,'darkRow','lightRow')}">
-                    <apex:variable var="index" value="{!index+1}"/>
-                    <!-- table body -->
-                      <td>
-                          <apex:outputText value="{!cashLine.dealer__Payment_Method__c}" />
-                      </td>
-                      <td>
-                        <apex:outputField value="{!cashLine.dealer__Deposit__c}" />
-                      </td>
-                      <td>
-                        <apex:outputText value="{0, date,MM'/'dd'/'yyyy}"> 
-                            <apex:param value="{!cashLine.dealer__Close_Date__c}" />
-                        </apex:outputText>
-                      </td>
-                      <td align="right">
-                          <apex:variable var="totalSale" value="{!totalSale+cashLine.dealer__Amount__c}"/>
-                          <apex:outputField value="{!cashLine.dealer__Amount__c}"/>     
-                      </td>
-
-                      <td align="right">
-                        <apex:variable var="totalFees" value="{!totalFees+cashLine.dealer__ProcessingFee__c}"/>
-                        <apex:outputField value="{!cashLine.dealer__ProcessingFee__c}"/>     
-                    </td>     
-                    <td align="right">
-                        <apex:outputText value="{0, number,{!currencyCode} ###,###,##0.00}">
-                            <apex:param value="{!cashLine.dealer__Amount__c + cashLine.dealer__ProcessingFee__c}" />
-                        </apex:outputText>
-                    </td>                     
-                </tr>
-              </apex:repeat>
-              <apex:outputPanel layout="none" rendered="{!cashLines.size > 0}">
-                <tr width="100%" >
-                    <td colspan="4">&nbsp;</td>
-                    <td class="darkRow" align="right">
-                        Total Paid:&nbsp;
-                    </td>
-                    <td class="darkRow" align="right">
-                        <apex:outputText value="{0, number,{!currencyCode} ###,###,##0.00}">
-                            <apex:param value="{!totalSale+totalFees}" />
-                        </apex:outputText>
-                    </td>
-                </tr>
-              </apex:outputPanel>
             </tbody>
         </table>
         <table width="100%">
