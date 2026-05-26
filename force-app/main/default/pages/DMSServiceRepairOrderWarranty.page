@@ -1,8 +1,3 @@
-<!--
-    Unmanaged Visualforce page for orgs with DealerTeam DMS installed.
-    Based on managed package page: dealer__ServiceRepairOrderWarrantyCopy (unmanaged: DMSServiceRepairOrderWarranty)
-    Customize this page in your org without modifying the managed package.
--->
 <apex:page StandardController="dealer__Service_Repair_Order__c" extensions="dealer__SROPrint" renderAs="PDF" showHeader="false" standardStylesheets="false"
     applyHtmlTag="false" applyBodyTag="false">
 
