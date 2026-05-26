@@ -3,5 +3,5 @@
     <apiVersion>64.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>cServiceRepairOrderPDF</label>
+    <label>cDMSServiceRepairOrderAuditPDF</label>
 </ApexPage>

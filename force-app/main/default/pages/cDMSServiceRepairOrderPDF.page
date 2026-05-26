@@ -1,6 +1,6 @@
 <!--
     Unmanaged Visualforce page for orgs with DealerTeam DMS installed.
-    Based on managed package page: dealer__ServiceRepairOrderPDF (unmanaged: cServiceRepairOrderPDF)
+    Based on managed package page: dealer__ServiceRepairOrderPDF (unmanaged: cDMSServiceRepairOrderPDF)
     Customize this page in your org without modifying the managed package.
 -->
 <apex:page StandardController="dealer__Service_Repair_Order__c" extensions="dealer__ServiceRepairOrder_EXT"  renderAs="PDF" showHeader="false" standardStylesheets="false" >
