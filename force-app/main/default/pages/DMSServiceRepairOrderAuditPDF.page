@@ -577,7 +577,7 @@
                                                     <apex:outputText value="{!sl.dealer__Purchase_Order__r.Name}" />
                                                 </td>
                                                 <td class="mPrint">
-                                                    <apex:outputText value="{!sl.dealer__Purchase_Order__r.Vendor_Name__c}" />
+                                                    <apex:outputText value="{!sl.dealer__Purchase_Order__r.dealer__Vendor_Name__c}" />
                                                 </td>
                                                 <td class="mPrint">
                                                     <apex:outputText value="{!sl.dealer__Description__c}" />
