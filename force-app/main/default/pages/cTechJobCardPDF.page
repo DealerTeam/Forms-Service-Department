@@ -1,0 +1,241 @@
+<!--
+    Unmanaged Visualforce page for orgs with DealerTeam DMS installed.
+    Based on managed package page: dealer__TechJobCardPDF (unmanaged: cTechJobCardPDF)
+    Customize this page in your org without modifying the managed package.
+-->
+<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer__ServiceRepairOrder_EXT" id="PrintedJobCard" renderAs="PDF" applyBodyTag="false">
+<head>
+<style type="text/css">
+body {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 12px;
+}
+td {
+    font-family: Tahoma, Geneva, sans-serif;
+    padding: 5px;
+}
+th {
+    font-family: Tahoma, Geneva, sans-serif;
+    text-align: left;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+table {
+    width: 100%;
+}
+
+form {
+    margin:0px;
+    padding:0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 100%;
+    margin:0px;
+    display:inline;
+}
+
+textarea {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 100%;
+ }
+
+img { border:0; }
+
+.plHead {
+    background-color: #09F;
+    boder-bottom:1px solid #999;
+    padding: 4px;
+    color: #FFF;  
+}
+.plDetailHead {
+	background-color: #696969;
+    boder-bottom:1px solid #999;
+    padding: 4px;
+    color: #FFF;  
+}
+.plDetailHeadLeft {
+	background-color: #696969;
+    boder-bottom:1px solid #999;
+    padding: 4px;
+    color: #FFF;  
+    text-align:left;
+}
+.plDetailHeadRight {
+	background-color: #696969;
+    boder-bottom:1px solid #999;
+    padding: 4px;
+    color: #FFF;  
+    text-align:right;
+}
+.plHeadLeft {
+    background-color: #09F;
+    padding: 4px;
+    color: #FFF;
+    text-align:left;    
+}
+.plHeadRight {
+    background-color: #09F;
+    padding: 4px;
+    color: #FFF;
+    text-align:right;   
+}
+.blueBack {
+	background-color: #09F;
+}
+.plEve {
+	font-size: 12px;
+	text-align: left;
+}
+.plValue {
+	text-align: right;
+	color: #000;
+	padding: 4px;
+}
+.plLabel {
+	text-align: left;
+	color: #000;
+	padding: 4px;
+}
+
+.pLT {
+	font-size:14px;
+	text-align: left;
+	color: #000;
+	padding: 2px;
+}
+
+.pLV {
+	font-size: 14px;
+	text-align: right;
+	color: #000;
+	padding: 2px;
+}
+
+.bLeft {
+	border-left: 1px solid #999;
+}
+.bRight {
+	border-right: 1px solid #999;
+}
+.bTop { 
+	border-top: 1px solid #999;
+}
+.bBottom { 
+	border-bottom: 1px solid #999;
+    font-size: 10px;
+}
+
+
+.odd {
+ background-color: #EEE;
+ padding: 1px 1px 2px 2px;
+}
+
+.even {
+ padding: 1px 1px 2px 2px;
+}
+
+
+@page {
+/* Landscape orientation */
+size:portrait;
+margin: 0.25in;
+}
+
+.page-number:before { content: counter(page); }
+.page-count:before { content: counter(pages); }
+</style>
+</head>   
+<table cellpadding="0" cellspacing="0">
+    <tr>
+        <td width="500px" valign="top">
+            <div id="orgDetails" class="plEve">
+            	<apex:outputText value="{!$Organization.Name}" style="font-size:18px;font-weight:bold;" /><br />
+            	<apex:outputText value="{!$Organization.Street}" /><br />
+            	<apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />	
+            	<apex:outputText value="{!DMSDefaults.dealer__Corporate_Website__c}" />
+            </div>
+    	</td>
+        <td width="500px">
+            <div style="float:right;">
+                <apex:image id="businessLogo" url="/{!InvoiceLogo}" /><br />
+            </div>
+            <div style="clear:both"></div>
+            <div style="float:right;">
+			<table style="" cellpadding="0" cellspacing="0">
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+        	</div>
+        </td>
+    </tr>
+    </table>   
+    <div style="height: 35px" />
+    <table width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+            <td colspan="3" class="bBottom"><b>Technicain Job Card</b></td>
+            <td class="bBottom"><apex:outputText value="{!printDateTime}" /></td>
+        </tr>
+        <tr>
+        	<td class="bBottom">RO#&nbsp;</td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.Name}" label="RO#" /></td>
+            <td class="bBottom">Advisor&nbsp;</td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__c}" label="Service Advisor" /></td>
+        </tr>        
+        <tr>
+        	<td class="bBottom">Vehicle&nbsp;</td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}" label="Vehicle" /></td>
+            <td class="bBottom">TAG&nbsp;</td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}" label="TAG" /></td>
+        </tr>
+        <tr>
+        	<td class="bBottom">VIN&nbsp;</td>
+            <td class="bBottom"><apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" label="Vehicle" /></td>
+            <td class="bBottom">&nbsp;</td>
+            <td class="bBottom">&nbsp;</td>
+        </tr>
+        <tr>
+        	<td colspan="4" style="font-size: 10px;">Notes:&nbsp;<apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Comments__c}" /></td>
+        </tr>
+    </table>
+    <div style="height: 35px" />
+    <table width="100%" cellpadding="4" cellspacing="0">
+        <tr>
+            <td colspan="6"><b>Job Lines</b></td>
+        </tr>
+        <tr>
+        	<th class="bBottom bLeft bTop blueBack">Line#</th>
+            <th class="bBottom bTop blueBack">Labor Type</th>
+            <th class="bBottom bTop blueBack">Stat</th>
+            <th class="bBottom bTop blueBack">Description</th>
+            <th class="bBottom bTop blueBack">Concern</th>
+            <th class="bBottom bRight bTop blueBack">Technician</th>
+        </tr>
+        <apex:repeat value="{!selectedLines}" var="s">
+        <tr>
+            <td class="bBottom bLeft"><apex:outputField value="{!s.dealer__Line_Number__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!s.dealer__Labor_Type__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!s.dealer__Stat__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!s.dealer__Operation_Code_Description__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!s.dealer__Concern__c}" /></td>
+            <td class="bBottom bRight"><apex:outputField value="{!s.dealer__Technician__c}" /></td>
+        </tr>
+       
+        <tr>
+            <td class="bBottom bLeft">Notes:</td>
+            <td class="bBottom bRight" colspan="7"><div style="height: 55px;" /></td>
+        </tr>
+       	</apex:repeat>
+    </table>
+    
+    <!-- Common Footer -->
+    <div style="position: fixed; bottom: 0; width: 100%; font-size: 10px; padding: 5px;">
+        Printed By: {!$User.FirstName} {!$User.LastName} {!printDateTime} - Page <span class="page-number"></span> of <span class="page-count"></span>
+    </div>
+    
+</apex:page>
