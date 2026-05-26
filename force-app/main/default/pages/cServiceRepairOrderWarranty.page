@@ -256,18 +256,132 @@
     </head>
 
     <div id="page1" style="margin-top:-20px;font-family:sans-serif;font-size:12px;">
-        <dealer:ServiceROCompliantHeader 
-            ro="{!ro}" 
-            userLoc="{!userLoc}" 
-            locInfo="{!locInfo}" 
-            vehicle="{!vehicle}" 
-            loc="{!loc}" 
-            currencyCode="{!currencyCode}" 
-            invoiceLogo="{!invoiceLogo}"
-            invoiceTotal="{!dealer__Service_Repair_Order__c.dealer__Warranty_Charges__c}"
-            printDateTime="{!printDateTime}"
-            invoiceDateTime="{!invoiceDateTime}"
-        />
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td colspan="2" style="height:55px;"></td>
+            </tr>
+            <tr>
+                <td width="500px" valign="top">
+                    <div id="orgDetails" class="plEve">
+                        <apex:outputPanel layout="none" rendered="{!ISBLANK(userLoc)}">    
+                            <apex:outputText value="{!$Organization.Name}" style="font-size:18px;font-weight:bold;" /><br />
+                            <apex:outputText value="{!$Organization.Street}" /><br />
+                            <apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />	
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(userLoc))}"> 
+                            <apex:outputText value="{!userLoc.Name}" style="font-size:18px;font-weight:bold;" /><br />
+                            <apex:outputText value="{!userLoc.dealer__Street__c}" /><br />
+                            <apex:outputText value="{!userLoc.dealer__City__c}" />,&nbsp;<apex:outputText value="{!userLoc.dealer__State__c}" />&nbsp;<apex:outputText value="{!userLoc.dealer__Postal_Code__c}" /><br />
+                            <apex:outputText value="{!userLoc.dealer__Website__c}" /><br />
+                        </apex:outputPanel>
+                    </div>
+                </td>
+                <td width="500px">
+                    <div style="float:right;"><apex:image id="businessLogo" url="/{!InvoiceLogo}" /></div>
+                    <div style="clear:both"></div>
+                    <div style="float:right;">
+                    <table style="" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="175px" class="pLT">Invoice#</td>
+                            <td class="pLV" style="font-size:18px;font-weight:bold;"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__RO_Number__c}" label="" /></td>
+                        </tr>
+                        <tr>
+                            <td width="175px" class="pLT">Invoice Date</td>
+                            <td class="pLV">
+                                <apex:outputText rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}">Open Invoice</apex:outputText>
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c))}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="175px" class="pLT blueBack" style="color: #FFF;">Amount</td>
+                            <td class="pLV blueBack" style="color: #FFF;"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Warranty_Charges__c}" /></apex:outputText></td>
+                        </tr>	
+                        <tr>
+                            <td width="175px"></td>
+                            <td style="font-size:10px">Printed&nbsp; 
+                                <apex:outputText value="{!printDateTime}" />
+                            </td>
+                        </tr>			
+                    </table>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="500px" valign="top">
+                    <div id="customerNameBlock">
+                        <div id="CustomerName"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Name}" /></div> 
+                        <div id="CustomerStreet"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingStreet}" /></div>  
+                        <div id="CustomerCityStateZip">
+                            <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingCity}" /><apex:outputText rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingCity))}">,</apex:outputText>&nbsp;
+                            <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingState}" />&nbsp;
+                            <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingPostalCode}" />
+                        </div>
+                    </div>          
+                </td>
+                <td width="500px" valign="top">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="cGrey">Phone</td>
+                            <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Phone}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="cGrey">Mobile</td>
+                            <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MobilePhone}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="cGrey">Email</td>
+                            <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Email}" /></td>
+                        </tr>
+                    </table>
+                </td>
+             </tr>
+        </table>
+
+        <!-- RO Details -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr bgcolor="#09F" class="HEADERGREY">
+                <td>VIN</td>
+                <td>Mileage</td>
+                <td>Advisor</td>
+                <td>RO Date</td>
+                <td>Tag#</td>
+            </tr>
+            <tr>
+                <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" /></td>
+                <td><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Mileage_In__c}" /></apex:outputText></td>
+                <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__r.Name}" /></td>
+                <td><apex:outputText value="{0,date,MM/dd/yyyy}"><apex:param value="{!dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c}" /></apex:outputText></td>
+                <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}" /></td>
+            </tr>    
+        </table>
+        <!-- Vehicle Details -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+          <tr class="HEADERGREY">
+            <td>Year&nbsp;</td>
+            <td>Make&nbsp;</td>
+            <td>Model&nbsp;</td>
+            <td>Body&nbsp;</td>
+            <td>License Number&nbsp;</td>
+            <td>Stock/Equipment Number&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Year__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Make__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Carline__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Vehicle_Description__c}" />&nbsp;</td>
+            <td class="mPrint"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Licence__c}" />&nbsp;</td>
+            <td class="mPrint">
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c}" />&nbsp;
+                <apex:outputText rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c)), NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c)))}">,&nbsp;</apex:outputText>
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c}" />
+            </td>
+          </tr>
+        </table>
 
         <!--  BODDY HERE -->
         <apex:variable var="total_partSum" value="{!0}" />
