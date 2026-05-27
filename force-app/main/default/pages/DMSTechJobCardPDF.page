@@ -1,264 +1,462 @@
-<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer.SROPrint" id="PrintedJobCard" renderAs="PDF" applyBodyTag="false">
+<apex:page standardController="dealer__Service_Repair_Order__c" 
+           extensions="dealer.SROPrint" 
+           id="PrintedJobCard" 
+           renderAs="PDF" 
+           applyBodyTag="false"
+           showHeader="false" 
+           sidebar="false" 
+           standardStylesheets="false"
+           cache="false">
+
 <head>
 <style type="text/css">
-body {
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 12px;
-}
-td {
-    font-family: Tahoma, Geneva, sans-serif;
-    padding: 5px;
-}
-th {
-    font-family: Tahoma, Geneva, sans-serif;
-    text-align: left;
-    font-weight: bold;
-    white-space: nowrap;
-}
+    body {
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+    }
+    td, th {
+        font-family: Tahoma, Geneva, sans-serif;
+        padding: 5px;
+    }
+    th {
+        text-align: left;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+    table {
+        width: 100%;
+    }
+    .sectionHeader {
+        background-color: #f0f0f0;
+        color: #000;
+        padding: 6px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .cGrey { color: #666; }
+    .bBottom { border-bottom: 1px solid #999; }
+    .bTop    { border-top: 1px solid #999; }
+    .bLeft   { border-left: 1px solid #999; }
+    .bRight  { border-right: 1px solid #999; }
 
-table {
-    width: 100%;
-}
+    .headerBlock {
+        border: 1px solid #999;
+        border-collapse: collapse;
+        margin-bottom: 6px;
+    }
+    .headerBlock td, .headerBlock th {
+        padding: 3px 6px;
+        vertical-align: top;
+        font-size: 11px;
+    }
+    .headerTitle {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        font-size: 13px;
+        border-bottom: 1px solid #999;
+        padding: 4px 6px;
+    }
+    .dealerName {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .locationName {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .continuationHeader {
+        position: running(continuationHeader);
+        width: 100%;
+        font-size: 10px;
+    }
+    .continuationTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #999;
+    }
+    .continuationTable td {
+        border: 1px solid #ccc;
+        padding: 3px 6px;
+        text-align: left;
+        vertical-align: middle;
+    }
+    .contLabel {
+        background-color: #f5f5f5;
+        color: #666;
+        font-weight: bold;
+        white-space: nowrap;
+        width: 70px;
+    }
+    .contValue {
+        font-weight: bold;
+    }
+    .infoTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .infoTable td {
+        border: 1px solid #ccc;
+        padding: 3px 6px;
+    }
+    .vehicleTable {
+        border: none;
+    }
+    .vehicleTable td {
+        font-size: 11px;
+    }
+    .infoLabel {
+        background-color: #f5f5f5;
+        color: #666;
+        font-weight: bold;
+        white-space: nowrap;
+        width: 90px;
+    }
+    .infoValueBold {
+        font-weight: bold;
+        font-size: 12px;
+    }
+    .amountRow td {
+        background-color: #666;
+        color: #fff;
+        font-weight: bold;
+    }
+    .amountRow td.infoLabel {
+        background-color: #666;
+        color: #fff;
+    }
+    .contactLabel {
+        color: #666;
+        font-weight: bold;
+        white-space: nowrap;
+        width: 55px;
+        border-bottom: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        padding: 2px 6px;
+    }
+    .contactValue {
+        border-bottom: 1px solid #ccc;
+        padding: 2px 6px;
+    }
 
-form {
-    margin:0px;
-    padding:0px;
-}
+    .sectionHeaderRow td {
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        font-size: 12px;
+    }
+    .daysDownLabel {
+        font-weight: normal;
+        font-size: 11px;
+        text-align: right;
+        white-space: nowrap;
+    }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 100%;
-    margin:0px;
-    display:inline;
-}
+    .job-line-block {
+        page-break-inside: avoid;
+        margin-bottom: 8px;
+        border: 1px solid #999;
+    }
+    .job-line-block td,
+    .job-line-block th {
+        padding: 3px 4px;
+    }
+    .job-line-block .sectionHeader {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+    .job-line-block.forcePageBreak {
+        page-break-before: always;
+    }
+    .handwrite {
+        height: 50px;
+        border: 1px solid #999;
+        background-color: #fafafa;
+    }
 
-textarea {
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 100%;
- }
+    @page {
+        size: portrait;
+        margin: 0.05in;
+        margin-top: 0.45in;
+        @top-center {
+            content: element(continuationHeader);
+            vertical-align: bottom;
+        }
+    }
 
-img { border:0; }
+    @page :first {
+        margin-top: 0.05in;
+        @top-center {
+            content: normal;
+        }
+    }
 
-.plHead {
-    background-color: #09F;
-    boder-bottom:1px solid #999;
-    padding: 4px;
-    color: #FFF;  
-}
-.plDetailHead {
-	background-color: #696969;
-    boder-bottom:1px solid #999;
-    padding: 4px;
-    color: #FFF;  
-}
-.plDetailHeadLeft {
-	background-color: #696969;
-    boder-bottom:1px solid #999;
-    padding: 4px;
-    color: #FFF;  
-    text-align:left;
-}
-.plDetailHeadRight {
-	background-color: #696969;
-    boder-bottom:1px solid #999;
-    padding: 4px;
-    color: #FFF;  
-    text-align:right;
-}
-.plHeadLeft {
-    background-color: #09F;
-    padding: 4px;
-    color: #FFF;
-    text-align:left;    
-}
-.plHeadRight {
-    background-color: #09F;
-    padding: 4px;
-    color: #FFF;
-    text-align:right;   
-}
-.blueBack {
-	background-color: #09F;
-}
-.plEve {
-	font-size: 12px;
-	text-align: left;
-}
-.plValue {
-	text-align: right;
-	color: #000;
-	padding: 4px;
-}
-.plLabel {
-	text-align: left;
-	color: #000;
-	padding: 4px;
-}
-
-.pLT {
-	font-size:14px;
-	text-align: left;
-	color: #000;
-	padding: 2px;
-}
-
-.pLV {
-	font-size: 14px;
-	text-align: right;
-	color: #000;
-	padding: 2px;
-}
-
-.bLeft {
-	border-left: 1px solid #999;
-}
-.bRight {
-	border-right: 1px solid #999;
-}
-.bTop { 
-	border-top: 1px solid #999;
-}
-.bBottom { 
-	border-bottom: 1px solid #999;
-    font-size: 10px;
-}
-
-
-.odd {
- background-color: #EEE;
- padding: 1px 1px 2px 2px;
-}
-
-.even {
- padding: 1px 1px 2px 2px;
-}
-
-.job-line-block {
-    page-break-inside: avoid;
-}
-
-.page-break-before {
-    page-break-before: always;
-}
-
-@page {
-/* Landscape orientation */
-size:portrait;
-margin: 0.25in;
-}
-
-.page-number:before { content: counter(page); }
-.page-count:before { content: counter(pages); }
+    .page-number:before { content: counter(page); }
+    .page-count:before { content: counter(pages); }
+    .pageFooter {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 10px;
+        padding: 5px;
+        border-top: 1px solid #999;
+        text-align: center;
+    }
 </style>
-</head>   
-<table cellpadding="0" cellspacing="0">
+</head>
+
+<!-- Continuation page header (pages 2+) -->
+<div class="continuationHeader">
+    <table cellpadding="0" cellspacing="0" class="continuationTable">
+        <tr>
+            <td class="contLabel">RO#</td>
+            <td class="contValue">
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__RO_Number__c}" />
+            </td>
+            <td class="contLabel">RO Date</td>
+            <td class="contValue">
+                <apex:outputText value="{0,date,MM/dd/yyyy}">
+                    <apex:param value="{!dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c}" />
+                </apex:outputText>
+            </td>
+            <td class="contLabel">Lines</td>
+            <td class="contValue">
+                <apex:outputText value="{!linesList.size}" />
+            </td>
+        </tr>
+        <tr>
+            <td class="contLabel">Organization</td>
+            <td class="contValue" colspan="2">
+                <apex:outputText value="{!$Organization.Name}" />
+            </td>
+            <td class="contLabel">Location</td>
+            <td class="contValue" colspan="2">
+                <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(userLoc))}">
+                    <apex:outputText value="{!userLoc.Name}" />
+                </apex:outputPanel>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Header -->
+<table cellpadding="0" cellspacing="0" width="100%" class="headerBlock">
     <tr>
-        <td width="500px" valign="top">
-            <div id="orgDetails" class="plEve">
-            	<apex:outputText value="{!$Organization.Name}" style="font-size:18px;font-weight:bold;" /><br />
-            	<apex:outputText value="{!$Organization.Street}" /><br />
-            	<apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />
-            </div>
-    	</td>
-        <td width="500px">
-            <div style="float:right;">
-                <apex:image id="businessLogo" url="/{!InvoiceLogo}" /><br />
-            </div>
-            <div style="clear:both"></div>
-            <div style="float:right;">
-			<table style="" cellpadding="0" cellspacing="0">
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-        	</div>
-        </td>
+        <td colspan="3" class="headerTitle">Tech Job Card</td>
     </tr>
-    </table>   
-    <div style="height: 35px" />
-    <table width="100%" cellpadding="0" cellspacing="0">
-		<tr>
-            <td colspan="3" class="bBottom"><b>Technicain Job Card</b></td>
-            <td class="bBottom"><apex:outputText value="{!printDateTime}" /></td>
-        </tr>
-        <tr>
-        	<td class="bBottom">RO#&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!ro.Name}" label="RO#" /></td>
-            <td class="bBottom">Advisor&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!ro.dealer__Service_Advisor__c}" label="Service Advisor" /></td>
-        </tr>        
-        <tr>
-        	<td class="bBottom">Vehicle&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!ro.dealer__Vehicle__c}" label="Vehicle" /></td>
-            <td class="bBottom">TAG&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!ro.dealer__Tag__c}" label="TAG" /></td>
-        </tr>
-        <tr>
-        	<td class="bBottom">VIN&nbsp;</td>
-            <td class="bBottom"><apex:outputField value="{!ro.dealer__Vehicle__r.dealer__VIN__c}" label="Vehicle" /></td>
-            <td class="bBottom">&nbsp;</td>
-            <td class="bBottom">&nbsp;</td>
-        </tr>
-        <tr>
-        	<td colspan="4" style="font-size: 10px;">Notes:&nbsp;<apex:outputField value="{!ro.dealer__Comments__c}" /></td>
-        </tr>
-    </table>
-    <div style="height: 35px" />
-    <table width="100%" cellpadding="4" cellspacing="0">
-        <tr>
-            <td colspan="6"><b>Job Lines</b></td>
-        </tr>
-        <tr>
-        	<th class="bBottom bLeft bTop blueBack">Line#</th>
-            <th class="bBottom bTop blueBack">Labor Type</th>
-            <th class="bBottom bTop blueBack">Stat</th>
-            <th class="bBottom bTop blueBack">Description</th>
-            <th class="bBottom bTop blueBack">Concern</th>
-            <th class="bBottom bRight bTop blueBack">Technician</th>
-        </tr>
-    </table>
-    <apex:variable var="lineNum" value="{!0}" />
-    <apex:repeat value="{!ServiceJobList}" var="s">
-        <apex:variable var="lineNum" value="{!lineNum + 1}" />
-        <apex:outputPanel layout="block" rendered="{!OR(lineNum == 3, AND(lineNum > 3, MOD(lineNum - 3, 4) == 0))}">
-            <div class="page-break-before"></div>
-            <table width="100%" cellpadding="4" cellspacing="0">
+    <tr>
+        <td align="left" valign="top" class="bRight" style="width:110px; padding:4px;">
+            <apex:image
+            id="businessLogo"
+            url="https://giantrv--partialnew.sandbox.file.force.com/file-asset/GaintRVLogo?v=1&amp;width=128&amp;height=128"
+            height="40" />
+        </td>
+        <td valign="top">
+            <div id="orgDetails">
+                <apex:outputPanel layout="none" rendered="{!ISBLANK(userLoc)}">
+                    <span class="dealerName"><apex:outputText value="{!$Organization.Name}" /></span><br />
+                    <apex:outputText value="{!$Organization.Street}" /><br />
+                    <apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" />
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(userLoc))}">
+                    <span class="dealerName"><apex:outputText value="{!$Organization.Name}" /></span><br />
+                    <span class="locationName"><apex:outputText value="{!userLoc.Name}" /></span><br />
+                    <apex:outputText value="{!userLoc.dealer__Street__c}" /><br />
+                    <apex:outputText value="{!userLoc.dealer__City__c}" />,&nbsp;<apex:outputText value="{!userLoc.dealer__State__c}" />&nbsp;<apex:outputText value="{!userLoc.dealer__Postal_Code__c}" /><br />
+                    <apex:outputText value="{!userLoc.dealer__Website__c}" />
+                </apex:outputPanel>
+            </div>
+        </td>
+        <td valign="top" class="bLeft">
+            <table cellpadding="0" cellspacing="0" class="infoTable">
                 <tr>
-                    <td colspan="6">
-                        <b>Job Lines</b> — RO#&nbsp;
-                        <apex:outputField value="{!ro.Name}" />
+                    <td class="infoLabel">Invoice#</td>
+                    <td class="infoValueBold">
+                        <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__RO_Number__c}" />
                     </td>
                 </tr>
                 <tr>
-                    <th class="bBottom bLeft bTop blueBack">Line#</th>
-                    <th class="bBottom bTop blueBack">Labor Type</th>
-                    <th class="bBottom bTop blueBack">Stat</th>
-                    <th class="bBottom bTop blueBack">Description</th>
-                    <th class="bBottom bTop blueBack">Concern</th>
-                    <th class="bBottom bRight bTop blueBack">Technician</th>
+                    <td class="infoLabel">Invoice Date</td>
+                    <td>
+                        <apex:outputText rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}">Open Invoice</apex:outputText>
+                        <apex:outputText value="{0,date,MM/dd/yyyy}" rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c))}">
+                            <apex:param value="{!dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr class="amountRow">
+                    <td class="infoLabel">Amount</td>
+                    <td>
+                        <apex:outputText value="{0,number, $###,##0.00}">
+                            <apex:param value="{!dealer__Service_Repair_Order__c.dealer__Customer_Invoice_Total__c}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="infoLabel">Printed</td>
+                    <td style="font-size:10px;"><apex:outputText value="{!printDateTime}" /></td>
                 </tr>
             </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="sectionHeader bTop" style="font-size:12px; padding:3px 6px;">Customer</td>
+    </tr>
+    <tr>
+        <td valign="top" colspan="2">
+            <div id="customerNameBlock">
+                <div id="CustomerName" style="font-weight:bold;"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Name}" /></div>
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingStreet}" /><br />
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingCity}" />
+                <apex:outputText rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingCity))}">,</apex:outputText>&nbsp;
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingState}" />&nbsp;
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MailingPostalCode}" />
+            </div>
+        </td>
+        <td valign="top" class="bLeft">
+            <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+                <tr>
+                    <td class="contactLabel">Phone</td>
+                    <td class="contactValue"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Phone}" /></td>
+                </tr>
+                <tr>
+                    <td class="contactLabel">Mobile</td>
+                    <td class="contactValue"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.MobilePhone}" /></td>
+                </tr>
+                <tr>
+                    <td class="contactLabel">Email</td>
+                    <td class="contactValue"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Customer_Contact__r.Email}" /></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="sectionHeader bTop" style="font-size:12px; padding:3px 6px;">
+            <table cellpadding="0" cellspacing="0" width="100%" class="sectionHeaderRow">
+                <tr>
+                    <td style="font-weight:bold;">Repair Order Detail</td>
+                    <td class="daysDownLabel">
+                        (<apex:outputText value="{!IF(ISBLANK(dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c), 0, IF(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c), FLOOR(NOW() - dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c), FLOOR(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c - dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c)))}" /> Days Down)
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="padding:0;">
+            <table cellpadding="0" cellspacing="0" class="infoTable vehicleTable" width="100%">
+                <tr>
+                    <td class="infoLabel">RO Date</td>
+                    <td>
+                        <apex:outputText value="{0,date,MM/dd/yyyy}">
+                            <apex:param value="{!dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c}" />
+                        </apex:outputText>
+                    </td>
+                    <td class="infoLabel">Tag# / Lines</td>
+                    <td>
+                        <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}" />
+                        <apex:outputText value=" / " />
+                        <apex:outputText value="{!linesList.size}" />
+                    </td>
+                    <td class="infoLabel">Advisor</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__r.Name}" /></td>
+                </tr>
+                <tr>
+                    <td class="infoLabel">VIN</td>
+                    <td colspan="3"><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__VIN__c}" /></td>
+                    <td class="infoLabel">Mileage</td>
+                    <td>
+                        <apex:outputText value="{0, number, #,###,###}">
+                            <apex:param value="{!dealer__Service_Repair_Order__c.dealer__Mileage_In__c}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="infoLabel">Year</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Year__c}" /></td>
+                    <td class="infoLabel">Make</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Make__c}" /></td>
+                    <td class="infoLabel">Model</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Carline__c}" /></td>
+                </tr>
+                <tr>
+                    <td class="infoLabel">Body</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Vehicle_Description__c}" /></td>
+                    <td class="infoLabel">License</td>
+                    <td><apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Licence__c}" /></td>
+                    <td class="infoLabel">Stock/Equip</td>
+                    <td>
+                        <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c}" />
+                        <apex:outputText rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c)), NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Equipment_Number__c)))}">,&nbsp;</apex:outputText>
+                        <apex:outputText value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__r.dealer__Stock_Number__c}" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<div style="height: 4px"></div>
+
+<apex:variable var="jobIdx" value="{!0}" />
+<apex:repeat value="{!linesList}" var="l">
+    <apex:variable var="jobIdx" value="{!jobIdx + 1}" />
+    <apex:outputPanel layout="block" rendered="{!jobIdx == 1}">
+        <div class="sectionHeader" style="margin-bottom:4px; padding:3px 6px; font-size:12px;"><b>Job Lines</b></div>
+    </apex:outputPanel>
+    <table width="100%" cellpadding="4" cellspacing="0" class="job-line-block{!IF(AND(jobIdx > 3, MOD(jobIdx - 4, 4) == 0), ' forcePageBreak', '')}">
+        <!-- Main Job Line -->
+        <tr>
+            <th class="bBottom bLeft sectionHeader" width="8%">Line#</th>
+            <th class="bBottom sectionHeader" width="15%">Labor Type</th>
+            <th class="bBottom sectionHeader" width="8%">Stat</th>
+            <th class="bBottom sectionHeader">Description</th>
+            <th class="bBottom sectionHeader">Technician</th>
+        </tr>
+        <tr>
+            <td class="bBottom bLeft"><apex:outputField value="{!l.dealer__Line_Number__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!l.dealer__Labor_Type__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!l.dealer__Stat__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!l.dealer__Operation_Code_Description__c}" /></td>
+            <td class="bBottom"><apex:outputField value="{!l.dealer__Technician__c}" /></td>
+        </tr>
+
+        <!-- Concern Row -->
+        <tr>
+            <td class="bBottom bLeft" style="font-weight:bold;">Concern:</td>
+            <td class="bBottom" colspan="4">
+                <apex:outputField value="{!l.dealer__CustomerConcern__c}" />
+            </td>
+        </tr>
+
+        <!-- Parts -->
+        <apex:outputPanel layout="none" rendered="{!l.dealer__Parts_Lines__r.size > 0}">
+            <tr>
+                <td class="bBottom bLeft" style="font-weight:bold; vertical-align:top;">Parts:</td>
+                <td class="bBottom" colspan="4">
+                    <apex:repeat value="{!l.dealer__Parts_Lines__r}" var="pl">
+                        • {!pl.dealer__Quantity_Sold__c} × {!pl.dealer__Part_Number__c} - {!pl.dealer__Part_Description__c}<br/>
+                    </apex:repeat>
+                </td>
+            </tr>
         </apex:outputPanel>
-        <table width="100%" cellpadding="4" cellspacing="0" class="job-line-block">
-            <tr>
-                <td class="bBottom bLeft"><apex:outputField value="{!s.dealer__Line_Number__c}" /></td>
-                <td class="bBottom"><apex:outputField value="{!s.dealer__Labor_Type__c}" /></td>
-                <td class="bBottom"><apex:outputField value="{!s.dealer__Stat__c}" /></td>
-                <td class="bBottom"><apex:outputField value="{!s.dealer__Operation_Code_Description__c}" /></td>
-                <td class="bBottom"><apex:outputField value="{!s.dealer__Concern__c}" /></td>
-                <td class="bBottom bRight"><apex:outputField value="{!s.dealer__Technician__c}" /></td>
-            </tr>
-            <tr>
-                <td class="bBottom bLeft">Notes:</td>
-                <td class="bBottom bRight" colspan="5"><div style="height: 55px;" /></td>
-            </tr>
-        </table>
-    </apex:repeat>
-    
-    <!-- Common Footer -->
-    <div style="position: fixed; bottom: 0; width: 100%; font-size: 10px; padding: 5px;">
-        Printed By: {!$User.FirstName} {!$User.LastName} {!printDateTime} - Page <span class="page-number"></span> of <span class="page-count"></span>
-    </div>
-    
+
+        <!-- Handwritten Fields -->
+        <tr>
+            <td class="bBottom bLeft" style="font-weight:bold;">Cause:</td>
+            <td class="bBottom handwrite" colspan="4"></td>
+        </tr>
+        <tr>
+            <td class="bBottom bLeft" style="font-weight:bold;">Correction:</td>
+            <td class="bBottom handwrite" colspan="4"></td>
+        </tr>
+    </table>
+</apex:repeat>
+
+<!-- Footer -->
+<div class="pageFooter">
+    Printed By: {!$User.FirstName} {!$User.LastName} — {!printDateTime} — Page <span class="page-number"></span> of <span class="page-count"></span>
+</div>
+
 </apex:page>
